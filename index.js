@@ -22,43 +22,44 @@ async function run() {
     const productsCollection = database.collection("products");
     const usersCollection = database.collection("users");
     const ordersCollection = database.collection("orders");
-
+    // Add Product
     app.post("/products", async (req, res) => {
       const product = req.body;
       const result = await productsCollection.insertOne(product);
       res.json(result);
     });
+    // Add Order
     app.post("/orders", async (req, res) => {
       const product = req.body;
       const result = await ordersCollection.insertOne(product);
       res.json(result);
     });
-
+    // Get Order
     app.get("/orders", async (req, res) => {
       const cursor = ordersCollection.find({});
       const orders = await cursor.toArray();
       res.json(orders);
     });
-
+    // Delete Single Order
     app.delete("/orders/:id", async (req, res) => {
       const id = req.params.id;
       const cursor = await ordersCollection.deleteOne({ _id: ObjectId(id) });
       res.json(cursor);
     });
-
+    // Delete Single Product
     app.delete("/products/:id", async (req, res) => {
       const id = req.params.id;
       const cursor = await productsCollection.deleteOne({ _id: ObjectId(id) });
       res.json(cursor);
     });
-
+    // Get Order
     app.get("/orders/:email", async (req, res) => {
       const email = req.params.email;
       const cursor = ordersCollection.find({ deliveryEmail: email });
       const products = await cursor.toArray();
       res.json(products);
     });
-
+    // Get Single Product
     app.get("/products", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
@@ -66,25 +67,26 @@ async function run() {
       const products = await cursor.toArray();
       res.json(products);
     });
-
+    //Get All Order
     app.get("/products", async (req, res) => {
       const cursor = productsCollection.find({});
       const products = await cursor.toArray();
       res.json(products);
     });
-
+    // Get Single Product
     app.get("/products/:id", async (req, res) => {
       const id = req.params.id;
       const cursor = productsCollection.find({ _id: ObjectId(id) });
       const products = await cursor.toArray();
       res.json(products);
     });
-
+    // Get All User
     app.post("/users", async (req, res) => {
       const user = req.body;
       const result = await usersCollection.insertOne(user);
       res.json(result);
     });
+    // PUT Users
     app.put("/users", async (req, res) => {
       const user = req.body;
       const filter = { email: user.email };
@@ -97,6 +99,7 @@ async function run() {
       );
       res.json(result);
     });
+    // Get User Email
     app.get("/users/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
@@ -107,6 +110,7 @@ async function run() {
       }
       res.json({ admin: isAdmin });
     });
+    // PUT Admin Email
     app.put("/users/admin", async (req, res) => {
       const user = req.body;
       const filter = { email: user.email };
@@ -114,8 +118,6 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updateDoc);
       res.json(result);
     });
-
-    console.log("Connected");
   } finally {
     // await client.close();
   }

@@ -21,9 +21,11 @@ https://fierce-caverns-02407.herokuapp.com/
 
 ## Features and Functionality
 List The Ready Features Here:
-- You Can Find Best Product Here
-- Also You Can Easily Navigate The Navbar
-- This Design is Followed By "Less is More"
+- You Can Get / POST Products
+- You Can Delete Single Products
+- You Can Get / POST Order
+- You Can Delete Single Order
+- You Can Set Admin
 
 
 
