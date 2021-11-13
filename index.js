@@ -21,12 +21,44 @@ async function run() {
     const database = client.db("woodcraft_shop");
     const productsCollection = database.collection("products");
     const usersCollection = database.collection("users");
+    const ordersCollection = database.collection("orders");
 
     app.post("/products", async (req, res) => {
       const product = req.body;
       const result = await productsCollection.insertOne(product);
       res.json(result);
     });
+    app.post("/orders", async (req, res) => {
+      const product = req.body;
+      const result = await ordersCollection.insertOne(product);
+      res.json(result);
+    });
+
+    app.get("/orders", async (req, res) => {
+      const cursor = ordersCollection.find({});
+      const orders = await cursor.toArray();
+      res.json(orders);
+    });
+
+    app.delete("/orders/:id", async (req, res) => {
+      const id = req.params.id;
+      const cursor = await ordersCollection.deleteOne({ _id: ObjectId(id) });
+      res.json(cursor);
+    });
+
+    app.delete("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const cursor = await productsCollection.deleteOne({ _id: ObjectId(id) });
+      res.json(cursor);
+    });
+
+    app.get("/orders/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = ordersCollection.find({ deliveryEmail: email });
+      const products = await cursor.toArray();
+      res.json(products);
+    });
+
     app.get("/products", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
@@ -38,7 +70,13 @@ async function run() {
     app.get("/products", async (req, res) => {
       const cursor = productsCollection.find({});
       const products = await cursor.toArray();
-      console.log(products);
+      res.json(products);
+    });
+
+    app.get("/products/:id", async (req, res) => {
+      const id = req.params.id;
+      const cursor = productsCollection.find({ _id: ObjectId(id) });
+      const products = await cursor.toArray();
       res.json(products);
     });
 
